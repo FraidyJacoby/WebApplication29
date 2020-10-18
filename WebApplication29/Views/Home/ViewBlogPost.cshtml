@@ -1,0 +1,61 @@
+﻿@using WebApplication29.Models
+@model CommentViewModel
+
+<head>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/blog-post.css" rel="stylesheet">
+</head>
+
+    <body>
+        <!-- Blog Post -->
+            <!-- Title -->
+            <h1>@Model.Post.Title</h1>
+            <!-- Date/Time -->
+            <p><span class="glyphicon glyphicon-time"></span> Posted on @Model.Post.DatePosted.ToShortDateString() at @Model.Post.DatePosted.ToShortTimeString()</p>
+
+            <hr>
+
+            <!-- Post Content -->
+            <p>@Model.Post.Body</p>
+            <hr>
+
+        <!-- Blog Comments -->
+
+        <!-- Comments Form -->
+        <div class="well">
+            <h4>Leave a Comment:</h4>
+            <form role="form" method="post" action="/home/addcomment">
+                <div class="form-group">
+                    <input type="hidden" name="blogPostId" value="@Model.Post.Id" />
+                    @if (Model.CommenterName != null)
+                    {
+                        <input type="text" value="@Model.CommenterName" name="name" style="margin-bottom:10px;" class="form-control" />
+                    }
+                    else
+                    {
+                        <input type="text" placeholder="Name" name="name" style="margin-bottom:10px;" class="form-control" />
+                    }
+
+                    <textarea class="form-control" rows="3" name="commentText"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        @foreach (Comment c in Model.Post.Comments)
+        {
+
+            <!-- Posted Comments -->
+            <!-- Comment -->
+            <div class="media">
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        @c.Name
+                        <small>@c.DatePosted.ToShortDateString() at @c.DatePosted.ToShortTimeString()</small>
+                    </h4>
+                    @c.CommentText
+                </div>
+            </div>
+        }
+
+    </body>
